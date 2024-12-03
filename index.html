@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Yuji+Mai&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <header class="p-5 bg-custom">
+      <h1 class="text-center">Crud Operation</h1>
+    </header>
+
+    <section class="mt-5">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-md-6 offset-md-3">
+            <input id="name" type="text" class="form-control inpEvent" placeholder="Name..." />
+          </div>
+          <div class="col-md-6 offset-md-3">
+            <input id="price" type="number" class="form-control inpEvent" placeholder="Price..." />
+          </div>
+          <div class="col-md-6 offset-md-3">
+            <select class="form-select" name="selected" id="selected">
+              <option selected disabled hidden value="">Category...</option>
+              <option value="TV">TV</option>
+              <option value="Electronic">Electronic</option>
+              <option value="Smart Watch">Smart Watch</option>
+            </select>
+          </div>
+          <div class="col-md-6 offset-md-3">
+            <!-- <input type="text" class="form-control" placeholder="Description..." /> -->
+            <textarea
+              name="textarea"
+              class="form-control inpEvent"
+              id="description"
+              placeholder="Description....."
+              rows="5"
+            ></textarea>
+          </div>
+          <div class="col-md-6 p-2 offset-md-3">
+            <div class="inner">
+              <div class="container">
+                <div class="row g-3">
+                  <div class="col-md-8 mt-md-5">
+                    <input type="file" id="file" class="form-control" placeholder="Price..." />
+                  </div>
+                  <div class="col-md-4">
+                    <div class="box-img">
+                      <img
+                        src="https://placehold.co/400x400"
+                        class="w-100 d-block img-thumbnail"
+                        alt="alt"
+                        id="imageFig"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 offset-md-4 text-center">
+            <button id="btnAdd" class="btn btn-dark w-100 d-block">Add Product</button>
+            <!-- <button id="btnUpdate" class="btn btn-warning w-100 d-none">Update Product</button> -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mt-5">
+      <div class="container my-5">
+        <div class="input-search-input-filter mb-5">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <input
+                class="form-control text-md-start text-center"
+                type="search"
+                placeholder="Search by......"
+                id="search"
+              />
+            </div>
+            <div class="col-md-6">
+              <select class="form-select text-md-center text-center" name="filter" id="filter">
+                <option disabled hidden selected value="">Filter By</option>
+                <option value="Price">Price</option>
+                <option value="Price">Created At</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <!-- <button class="btn-warning"></button> -->
+        <div class="row g-4" id="rowData">
+          <!-- 
+          <div class="col-md-4">
+            <div class="inner text-center p-2 rounded-2 shadow-sm">
+              <div class="img mb-2">
+                <img src="./imgs/ninja_2.jpg" class="w-100 img-custom d-block" alt="" />
+              </div>
+              <div class="price-cat mb-2 d-flex align-items-center justify-content-between">
+                <span class="badge text-bg-primary text-nowrap">Cat:</span>
+                <span>price:$</span>
+              </div>
+              <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos beatae nam, provident
+                optio mollitia consectetur.
+              </p>
+              <div class="btns">
+                <button class="btn btn-warning">Update</button>
+                <button class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="inner text-center p-2 rounded-2 shadow-sm">
+              <div class="img mb-2">
+                <img src="./imgs/ninja_3.jpg" class="w-100 img-custom d-block" alt="" />
+              </div>
+              <div class="price-cat mb-2 d-flex align-items-center justify-content-between">
+                <span class="badge text-bg-primary text-nowrap">Cat:</span>
+                <span>price:$</span>
+              </div>
+              <p>
+                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eos beatae nam, provident
+                optio mollitia consectetur.
+              </p>
+              <div class="btns">
+                <button class="btn btn-warning">Update</button>
+                <button class="btn btn-danger">Delete</button>
+              </div>
+            </div>
+          </div> -->
+        </div>
+        <h1 id="notFound" class="text-bg-danger text-center mt-5 d-none">No Data Found</h1>
+      </div>
+    </section>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>

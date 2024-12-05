@@ -18,7 +18,7 @@ let regex = {
   price: /^([6-9][0-9]{3}|[1-5][0-9]{4}|60000)$/,
   selected: /^(TV|Electronic|Smart ?Watch)$/i,
   description: /^.{3,250}$/,
-  file: /.+\.(png|jpg)/,
+  imageFig: /.+\.(png|jpg)/,
 };
 document.querySelectorAll(".inpEvent").forEach((e) => {
   e.addEventListener("input", (el) => {
@@ -38,9 +38,13 @@ display();
 
 file.addEventListener("change", () => {
   // bug
-  imageFig.setAttribute("src", `./imgs/${file.files[0]?.name}`);
-  // if (validationInputs(file)) {
+  // if (validationInputs(imageFig)) {
   // }
+  console.log(validationInputs(imageFig));
+  imageFig.setAttribute("src", `./imgs/${file.files[0]?.name}`);
+  if (validationInputs(imageFig)) {
+    imageFig.classList.add("green");
+  }
 });
 document.getElementById("btnAdd").addEventListener("click", function () {
   addOrUpdate(GlobalId, flag);
@@ -59,15 +63,9 @@ function confirmValidationForms() {
   if (!validationInputs(selected)) {
     valid = false;
   }
-  // if (!file.files[0] && flag == false) {
-  //   if (!validationInputs(file)) {
-  //     valid = false;
-  //   }
-  // } else if (file.files[0] && flag == true) {
-  //   if (!validationInputs(file)) {
-  //     valid = false;
-  //   }
-  // }
+  if (!validationInputs(imageFig)) {
+    valid = false;
+  }
   return valid;
 }
 function addOrUpdate(GlobalId = 0, flag = false) {
@@ -81,7 +79,6 @@ function addOrUpdate(GlobalId = 0, flag = false) {
     // name Only Without Path
     file: file.files[0]?.name ? file.files[0]?.name : imageFig.getAttribute("src").split("/")[2],
   };
-  console.log(objData.file);
   if (confirmValidationForms()) {
     if (flag && GlobalId) {
       Products = Products.map((e) => {
@@ -105,6 +102,7 @@ function addOrUpdate(GlobalId = 0, flag = false) {
 }
 
 function display(list = Products) {
+  document.getElementById("rowData").innerHTML = "";
   let box = list.map((e) => {
     return `<div class="col-md-4">
             <div class="inner text-center p-2 rounded-2 shadow-sm">
@@ -175,34 +173,29 @@ function deleteProducts(id) {
   display();
 }
 
-function validationInputs(el, size = -1) {
-  // if (size != -1) {
-  //   if (regex[el.id].test(el.getAttribute("src")) && +(size / 1024).toFixed(2) < 12000) {
-  //     imageFig.classList.add("green");
-  //     imageFig.classList.remove("red");
-  //     return true;
-  //   } else {
-  //     imageFig.classList.add("red");
-  //     imageFig.classList.remove("green");
-  //     return false;
-  //   }
-  // } else {
-
+function validationInputs(el) {
+  if (el.id == "imageFig") {
+    console.log(el.id);
+    if (
+      regex[el.id].test(el.getAttribute("src")) &&
+      el.getAttribute("src") != "https://placehold.co/400x400"
+    ) {
+      imageFig.classList.add("green");
+      imageFig.classList.remove("red");
+      return true;
+    } else {
+      imageFig.classList.add("red");
+      imageFig.classList.remove("green");
+      return false;
+    }
+  }
   if (regex[el.id].test(el.value)) {
     el.classList.add("is-valid");
     el.classList.remove("is-invalid");
-    if (el.id == "file") {
-      imageFig.classList.add("green");
-      imageFig.classList.remove("red");
-    }
     return true;
   } else {
     el.classList.add("is-invalid");
     el.classList.remove("is-valid");
-    if (el.id == "file") {
-      imageFig.classList.add("red");
-      imageFig.classList.remove("green");
-    }
     return false;
   }
   // }
@@ -224,14 +217,18 @@ search.addEventListener("input", (el) => {
 
 // Sort By Price And CreatedAt
 filter.addEventListener("change", (e) => {
+  // bug if price == price another
   if (e.target.value == "price") {
+    console.log("Price");
     const minPrice = Products.map((e) => {
       return +e.price;
     });
     minPrice.sort((a, b) => {
       return a - b;
     });
+    console.log(minPrice);
     let sortPrice = [];
+    console.log(sortPrice);
     minPrice.forEach((p) => {
       Products.forEach((e) => {
         if (p == +e.price) {
@@ -239,7 +236,9 @@ filter.addEventListener("change", (e) => {
         }
       });
     });
+    console.log(sortPrice);
     Products = [...sortPrice];
+    console.log(Products);
   } else if (e.target.value == "created") {
     // console.log("created");
     const idDate = Products.map((e) => {
@@ -260,5 +259,6 @@ filter.addEventListener("change", (e) => {
   } else if (e.target.value == "Default") {
     Products = JSON.parse(localStorage.getItem("arrProducts"));
   }
+  console.log(Products);
   display(Products);
 });

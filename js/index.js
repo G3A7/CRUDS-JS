@@ -38,9 +38,9 @@ display();
 
 file.addEventListener("change", () => {
   // bug
-  if (validationInputs(file)) {
-    imageFig.setAttribute("src", `./imgs/${file.files[0]?.name}`);
-  }
+  imageFig.setAttribute("src", `./imgs/${file.files[0]?.name}`);
+  // if (validationInputs(file)) {
+  // }
 });
 document.getElementById("btnAdd").addEventListener("click", function () {
   addOrUpdate(GlobalId, flag);
@@ -71,7 +71,7 @@ function confirmValidationForms() {
   return valid;
 }
 function addOrUpdate(GlobalId = 0, flag = false) {
-  console.log(flag,GlobalId);
+  // console.log(flag, GlobalId);
   let objData = {
     id: Date.now(),
     name: name.value,
@@ -104,20 +104,20 @@ function addOrUpdate(GlobalId = 0, flag = false) {
   flag = false;
 }
 
-function display() {
-  let box = Products.map((e) => {
+function display(list = Products) {
+  let box = list.map((e) => {
     return `<div class="col-md-4">
             <div class="inner text-center p-2 rounded-2 shadow-sm">
               <div class="img mb-2">
               <img src="./imgs/${e.file}" class="w-100 img-custom d-block" alt="" />
               </div>
-              <span>name:${e.name}</span>
+              <p>name:${e.nickName ? e.nickName : e.name}</p>
               <div class="price-cat mb-2 mt-2 d-flex align-items-center justify-content-between">
                 <span class="badge text-bg-primary text-nowrap">Cat:${e.selected}</span>
                 <span>price:${e.price}$</span>
               </div>
               <p class='my-3'>
-                ${e.description.slice(0, 20)}...
+                ${e.descriptionTemp ? e.descriptionTemp : e.description.slice(0, 20)}...
               </p>
               <div class="btns mt-5">
                 <button onclick='setDataToUpdate(${e.id})'  class="btn btn-warning">Update</button>
@@ -128,7 +128,7 @@ function display() {
   });
   // many ways to display
   document.getElementById("rowData").innerHTML = box.join("").split(",").join("");
-  if (Products.length) {
+  if (list.length) {
     document.getElementById("notFound").classList.replace("d-block", "d-none");
   } else {
     document.getElementById("notFound").classList.replace("d-none", "d-block");
@@ -207,3 +207,58 @@ function validationInputs(el, size = -1) {
   }
   // }
 }
+
+// Search
+search.addEventListener("input", (el) => {
+  const regexSearch = new RegExp(el.target.value, "i");
+  const searchArr = Products.filter((e) => {
+    e.nickName = e.name.replace(regexSearch, `<span class='text-info'>${el.target.value}</span>`);
+    e.descriptionTemp = e.description.replace(
+      regexSearch,
+      `<span class='text-info'>${el.target.value}</span>`
+    );
+    return regexSearch.test(e.name) || regexSearch.test(e.description);
+  });
+  display(searchArr);
+});
+
+// Sort By Price And CreatedAt
+filter.addEventListener("change", (e) => {
+  if (e.target.value == "price") {
+    const minPrice = Products.map((e) => {
+      return +e.price;
+    });
+    minPrice.sort((a, b) => {
+      return a - b;
+    });
+    let sortPrice = [];
+    minPrice.forEach((p) => {
+      Products.forEach((e) => {
+        if (p == +e.price) {
+          sortPrice.push(e);
+        }
+      });
+    });
+    Products = [...sortPrice];
+  } else if (e.target.value == "created") {
+    // console.log("created");
+    const idDate = Products.map((e) => {
+      return +e.id;
+    });
+    idDate.sort((a, b) => {
+      return a - b;
+    });
+    let sortCreated = [];
+    idDate.forEach((p) => {
+      Products.forEach((e) => {
+        if (p == +e.id) {
+          sortCreated.push(e);
+        }
+      });
+    });
+    Products = [...sortCreated];
+  } else if (e.target.value == "Default") {
+    Products = JSON.parse(localStorage.getItem("arrProducts"));
+  }
+  display(Products);
+});

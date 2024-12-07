@@ -39,7 +39,10 @@ document.querySelectorAll(".inpEvent").forEach((e) => {
     validationInputs(el.target);
   });
 });
-
+function resetFlagAndId() {
+  flag = false;
+  GlobalId = 0;
+}
 selected.addEventListener("change", (e) => {
   validationInputs(e.target);
 });
@@ -54,7 +57,7 @@ file.addEventListener("change", () => {
   // bug
   // if (validationInputs(imageFig)) {
   // }
-  console.log(validationInputs(imageFig));
+  // console.log(validationInputs(imageFig));
   imageFig.setAttribute("src", `./imgs/${file.files[0]?.name}`);
   if (validationInputs(imageFig)) {
     imageFig.classList.add("green");
@@ -94,6 +97,7 @@ function addOrUpdate(GlobalId = 0, flag = false) {
     file: file.files[0]?.name ? file.files[0]?.name : imageFig.getAttribute("src").split("/")[2],
   };
   if (confirmValidationForms()) {
+    console.log(flag, GlobalId);
     if (flag && GlobalId) {
       Products = Products.map((e) => {
         if (e.id == GlobalId) {
@@ -102,6 +106,7 @@ function addOrUpdate(GlobalId = 0, flag = false) {
           return e;
         }
       });
+      console.log("I' here");
     } else {
       Products.push(objData);
     }
@@ -115,7 +120,7 @@ function addOrUpdate(GlobalId = 0, flag = false) {
     let inputError = arrayInputs.filter((e) => {
       return !validationInputs(e);
     });
-    console.log(inputError);
+    // console.log(inputError);
     inputError.forEach((e) => {
       for (key in info) {
         if (key == e.id) {
@@ -128,8 +133,7 @@ function addOrUpdate(GlobalId = 0, flag = false) {
     });
     document.querySelector(".box-black").classList.replace("d-none", "position-fixed");
   }
-  GlobalId = 0;
-  flag = false;
+  resetFlagAndId();
 }
 
 function display(list = Products) {

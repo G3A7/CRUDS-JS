@@ -11,6 +11,9 @@ const description = document.getElementById("description");
 const imageFig = document.getElementById("imageFig");
 const search = document.getElementById("search");
 const filter = document.getElementById("filter");
+const ulInfo = document.querySelector(".ul-info");
+const arrayInputs = Array.from(document.querySelectorAll(".inpEvent"));
+arrayInputs.push(selected, imageFig);
 let flag = false;
 let GlobalId = 0;
 let regex = {
@@ -20,6 +23,17 @@ let regex = {
   description: /^.{3,250}$/,
   imageFig: /.+\.(png|jpg)/,
 };
+
+let info = {
+  name: "Name must be at least 3 characters long",
+  price: "Price must be between 6000 and 60000",
+  selected: " category Must be (TV | Electronics)",
+  description: "Description must be at least 3 characters ",
+  imageFig: "image must be extention (jpg | png )",
+};
+// for (item in info){
+//   console.log(item)
+// }
 document.querySelectorAll(".inpEvent").forEach((e) => {
   e.addEventListener("input", (el) => {
     validationInputs(el.target);
@@ -96,6 +110,23 @@ function addOrUpdate(GlobalId = 0, flag = false) {
     document.getElementById("btnAdd").classList.replace("btn-warning", "btn-dark");
     display();
     clear();
+  } else {
+    ulInfo.innerHTML = "";
+    let inputError = arrayInputs.filter((e) => {
+      return !validationInputs(e);
+    });
+    console.log(inputError);
+    inputError.forEach((e) => {
+      for (key in info) {
+        if (key == e.id) {
+          ulInfo.innerHTML += `<li>
+            <i class="fa-solid fa-pen-to-square"></i>
+           ${info[key]}
+          </li>`;
+        }
+      }
+    });
+    document.querySelector(".box-black").classList.replace("d-none", "position-fixed");
   }
   GlobalId = 0;
   flag = false;
@@ -175,7 +206,7 @@ function deleteProducts(id) {
 
 function validationInputs(el) {
   if (el.id == "imageFig") {
-    console.log(el.id);
+    // console.log(el.id);
     if (
       regex[el.id].test(el.getAttribute("src")) &&
       el.getAttribute("src") != "https://placehold.co/400x400"
@@ -192,6 +223,7 @@ function validationInputs(el) {
   if (regex[el.id].test(el.value)) {
     el.classList.add("is-valid");
     el.classList.remove("is-invalid");
+
     return true;
   } else {
     el.classList.add("is-invalid");
@@ -261,4 +293,8 @@ filter.addEventListener("change", (e) => {
   }
   console.log(Products);
   display(Products);
+});
+
+document.querySelector(".close").addEventListener("click", function () {
+  document.querySelector(".box-black").classList.replace("position-fixed", "d-none");
 });

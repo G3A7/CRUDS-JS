@@ -58,3 +58,59 @@ select[id="selected"] {
 .green {
   border: 2px solid green;
 }
+
+.box-black {
+  /* margin: 10px; */
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #000000b7;
+  padding: 20px;
+}
+.box-white {
+  position: relative;
+  width: 28.125rem;
+  padding-top: 10px;
+}
+.box-white span.close {
+  top: 2px;
+  right: 17px;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+ul {
+  margin: 0;
+  padding: 25px !important;
+}
+ul li i {
+  color: red;
+  margin-right: 10px;
+}
+.icons {
+  width: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+}
+.icons span {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.icons span:nth-child(1) {
+  background-color: red;
+}
+.icons span:nth-child(2) {
+  background-color: green;
+}
+.icons span:nth-child(3) {
+  background-color: yellow;
+}
